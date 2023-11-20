@@ -3,14 +3,17 @@
     <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
       <!-- Angular on finding, 'form' in the template creates its owm form-group, but to tell angular we need our form-group instead of the one, it creates by default we need a directive '[formGroup]' (will throw error if ReactiveFormsModule not in imports array in app.module.ts) -->
       <!-- Hence, using property bidning to use signupForm. Now our form is sync with the form we created in TS. But for telling angular, which controls should be connected to which inputs, we use another directive 'formControlName'on the inputs-->
-      <form [formGroup]="signupForm">
+
+      <!-- For form-submission, just like we used ngSubmit directive with event binding, we will use the same direcive here as we still want to react to this default submit event which is fired by HTML, JS -->
+      <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label for="username">Username</label>
           <input
             type="text"
             id="username"
             formControlName="username"
-            class="form-control">
+            class="form-control"
+          />
         </div>
         <div class="form-group">
           <label for="email">email</label>
@@ -18,14 +21,14 @@
             type="text"
             id="email"
             formControlName="email"
-            class="form-control">
+            class="form-control"
+          />
         </div>
         <div class="radio" *ngFor="let gender of genders">
           <label>
-            <input
-              type="radio"
-              formControlName="gender"
-              [value]="gender">{{ gender }}
+            <input type="radio" formControlName="gender" [value]="gender" />{{
+              gender
+            }}
           </label>
         </div>
         <button class="btn btn-primary" type="submit">Submit</button>

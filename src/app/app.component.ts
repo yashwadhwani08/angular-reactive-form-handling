@@ -29,9 +29,18 @@ export class AppComponent implements OnInit {
     // 2nd arg is 'validator' (single or array of validators) we want to apply to this control.
     // 3rd arg is potential asynchronous validators
     this.signupForm = new FormGroup({
-      username: new FormControl(null),
-      email: new FormControl(null),
-      gender: new FormControl('male'),
+      "username": new FormControl(null),
+      "email": new FormControl(null),
+      "gender": new FormControl('male'),
     });
+  }
+
+  onSubmit() {
+    // In this case of reactive-form handling, we don't need to get the form via local reference, that would not work either, since we are not using Angular's auto creation mechanism.
+
+    // but instead, we can make use of the form-group we created in TS code, since it holds the overall form.
+    console.log(this.signupForm);
+
+    // On doing console.log, a FormGroup object is logged in which we get the 'value' property the key-value pairs of the JS object which makes up our FormGroup, keys being the control names we setup, values being the user-inputs. So whatever we set up as an argument in JS object while initializing the Form-Group, that is what we get out as a value of the form. So we can bind it our own model, the model of your application and make sure that the form structure matches the structure of your model.
   }
 }
