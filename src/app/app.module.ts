@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    // Note: FormsModule is required when working with template driven form handling, not for Reactive-form handling, for reactive-form-handling, we require ReactiveFormsModule from @angular/forms
+    // Note: FormsModule is required when working with template driven form handling, not for Reactive-form handling, for reactive-form-handling (while connecting our TS code with our HTML template), we require ReactiveFormsModule from @angular/forms
     ReactiveFormsModule,
   ],
   providers: [],
