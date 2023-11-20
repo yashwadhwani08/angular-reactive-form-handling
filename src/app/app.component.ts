@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -29,8 +29,13 @@ export class AppComponent implements OnInit {
     // 2nd arg is 'validator' (single or array of validators) we want to apply to this control.
     // 3rd arg is potential asynchronous validators
     this.signupForm = new FormGroup({
-      "username": new FormControl(null),
-      "email": new FormControl(null),
+      // When using validatoers, make sure to not call the method (not use parenthese after the method name), just give the refernce of the method since it is a static method made available by validators here. Angular will execute the method whenever it detects that the input of this form-control changed. it just needs to have reference on what it should execute at this point of time.
+
+      // passing a single validator
+      "username": new FormControl(null, Validators.required),
+
+      // passing an array of validators
+      "email": new FormControl(null, [Validators.required, Validators.email]),
       "gender": new FormControl('male'),
     });
   }

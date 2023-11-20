@@ -8,6 +8,7 @@
       <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label for="username">Username</label>
+          <!-- In template driven approach, you would add 'required' to input field which would be used in validation, it doesn't work in the reactive-approach since we are not configuring the form in the template, we are only syncing it with the directives such as formControlName and formGroup, we are configuring in TS code, hence validations to be applied there. -->
           <input
             type="text"
             id="username"
