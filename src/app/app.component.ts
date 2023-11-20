@@ -32,11 +32,17 @@ export class AppComponent implements OnInit {
       // When using validatoers, make sure to not call the method (not use parenthese after the method name), just give the refernce of the method since it is a static method made available by validators here. Angular will execute the method whenever it detects that the input of this form-control changed. it just needs to have reference on what it should execute at this point of time.
 
       // passing a single validator
-      "username": new FormControl(null, Validators.required),
 
-      // passing an array of validators
-      "email": new FormControl(null, [Validators.required, Validators.email]),
-      "gender": new FormControl('male'),
+      //as in template-driven forms, we can a have a form-group inside a form-group for having a bunch of form-controls
+
+      // formGroup is not only there to be used on the overall form, it just happens to be a form-group too. We can form-groups in form-groups, where form-controls can be placed inside of the inner form-group
+
+      userData: new FormGroup({
+        username: new FormControl(null, Validators.required),
+        // passing an array of validators
+        email: new FormControl(null, [Validators.required, Validators.email]),
+      }),
+      gender: new FormControl('male'),
     });
   }
 
