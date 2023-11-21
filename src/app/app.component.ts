@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -43,6 +43,8 @@ export class AppComponent implements OnInit {
         email: new FormControl(null, [Validators.required, Validators.email]),
       }),
       gender: new FormControl('male'),
+      // FormArray to be used if you want to hold array of controls, to initialize pass an array, you could already initialize some form-controls or keep the array empty.
+      hobbies: new FormArray([]),
     });
   }
 
@@ -54,4 +56,26 @@ export class AppComponent implements OnInit {
 
     // On doing console.log, a FormGroup object is logged in which we get the 'value' property the key-value pairs of the JS object which makes up our FormGroup, keys being the control names we setup, values being the user-inputs. So whatever we set up as an argument in JS object while initializing the Form-Group, that is what we get out as a value of the form. So we can bind it our own model, the model of your application and make sure that the form structure matches the structure of your model.
   }
+
+  // when the 'Add Hobby' button is clicked, a new hobby has to be added to 'hobbies' fom-array
+  onAddHobby() {
+    // Explicit casting to tell TS that this is of type FormArray, rarely we have to do this but in case of using FormArray we need to tell TS to not get an error.
+
+    const control = new FormControl(null, Validators.required);
+    (<FormArray>this.signupForm.get('hobbies')).push(control);
+  }
+
+  getControls() {
+    return (<FormArray>this.signupForm.get('hobbies')).controls;
+
+    // Alternate typecasting syntax
+    // return (this.signupForm.get('hobbies') as FormArray).controls;
+  }
+
+  // We could have used getter method
+
+  // get controls() { }
+
+  // in the template:
+  // *ngFor="let hobbyControl of controls; let i = index"
 }
