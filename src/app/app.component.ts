@@ -16,6 +16,9 @@ export class AppComponent implements OnInit {
   signupForm: FormGroup;
   genders = ['male', 'female'];
 
+  // we want to write a custom validator, that ensures user is not using the username from the forbiddenUsernames
+  forbiddenUsernames = ['Yash', 'Ansh'];
+
   // the form should be initialized before rendering the template, hence make sure to use a lifecycle hook which is called before the template is rendered.
 
   ngOnInit(): void {
@@ -38,7 +41,11 @@ export class AppComponent implements OnInit {
       // formGroup is not only there to be used on the overall form, it just happens to be a form-group too. We can form-groups in form-groups, where form-controls can be placed inside of the inner form-group
 
       userData: new FormGroup({
-        username: new FormControl(null, Validators.required),
+        // pass the cutom validation function name, don't execute it. use bind(this) because without it, it would throw the error since Angular is calling(executing) forbiddenNames function not from inside of this class, ytherefore 'this' will not refer to our class here. Hence bind(this) makes sure that 'this' refers to what we want it to refer to.
+        username: new FormControl(null, [
+          Validators.required,
+          this.forbiddenNames.bind(this),
+        ]),
         // passing an array of validators
         email: new FormControl(null, [Validators.required, Validators.email]),
       }),
@@ -78,4 +85,15 @@ export class AppComponent implements OnInit {
 
   // in the template:
   // *ngFor="let hobbyControl of controls; let i = index"
+
+  // A validator in the end is just a function which gets executed by Angular automatically when it checks the validity of the form control and it does that whenever you change the control.
+
+  // A validator needs to get control which it should check as argument to work correctly, a validator should also return something for angular to be able to handle the return value correctly. The return type would be a JS object, in the object, it should have any key which can be interpreted as a string. This (the square bracket notation [property: type]) is the typescript syntax for saying that key can be interpreted as a string
+  forbiddenNames(control: FormControl): { [s: string]: boolean } {
+    if (this.forbiddenUsernames.indexOf(control.value) !== -1) {
+      return { nameIsForbidden: true };
+    }
+    // IMP: return null if validation is successful or omit the return statement.
+    return null;
+  }
 }
