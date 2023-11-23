@@ -27,7 +27,18 @@
               "
               class="help-block"
             >
-              Please enter a valid username!
+              <!-- Using error code that we get on the indiviudal control to show the right error messages -->
+              <!-- Angular adds the erro codes on the individual controls on the errors object -->
+              <span
+                *ngIf="
+                  signupForm.get('userData.username').errors['nameIsForbidden']
+                "
+                >Please enter a valid username</span
+              >
+              <span
+                *ngIf="signupForm.get('userData.username').errors['required']"
+                >Username is required</span
+              >
             </span>
           </div>
           <div class="form-group">
