@@ -63,6 +63,34 @@ export class AppComponent implements OnInit {
       // FormArray to be used if you want to hold array of controls, to initialize pass an array, you could already initialize some form-controls or keep the array empty.
       hobbies: new FormArray([]),
     });
+    // There is a form-state we can track in general
+    // On each form and each control of the form, we have two observables we can listen to, 'statusChanges' and 'valueChanges' if you want to react to the form-changes.
+    // The first arguement to subscribe is callback that gets executed when new data arrives.
+    this.signupForm.valueChanges.subscribe((value) => {
+      console.log(value);
+    });
+
+    // On executing this, in browser on every keystroke in sny of the form-fields, the form-object (value of the form) is printed.
+
+    this.signupForm.statusChanges.subscribe((status) => {
+      console.log(status);
+      // prints: INVALID, PENDING, VALID
+    });
+
+    // Just like setValue and patchValue methods in template-driven approach, we have setValue (to change values of the entire form) and patchValue (for partial updates to some of the values in the form) methods in reactive-approach as well
+
+    this.signupForm.setValue({
+      userData: {
+        username: 'Yash',
+        email: 'yash@test.com',
+      },
+      gender: 'male',
+      hobbies: [],
+    });
+
+    this.signupForm.patchValue({
+      userData: { username: 'Ekta' },
+    });
   }
 
   onSubmit() {
@@ -72,6 +100,9 @@ export class AppComponent implements OnInit {
     console.log(this.signupForm);
 
     // On doing console.log, a FormGroup object is logged in which we get the 'value' property the key-value pairs of the JS object which makes up our FormGroup, keys being the control names we setup, values being the user-inputs. So whatever we set up as an argument in JS object while initializing the Form-Group, that is what we get out as a value of the form. So we can bind it our own model, the model of your application and make sure that the form structure matches the structure of your model.
+
+    // form-restting is also available on reactive-forms just like template-driven approach. You can pass an object to reset() to reset to specific values.
+    this.signupForm.reset();
   }
 
   // when the 'Add Hobby' button is clicked, a new hobby has to be added to 'hobbies' fom-array
