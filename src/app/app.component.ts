@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -47,7 +48,16 @@ export class AppComponent implements OnInit {
           this.forbiddenNames.bind(this),
         ]),
         // passing an array of validators
-        email: new FormControl(null, [Validators.required, Validators.email]),
+
+        // Async validator (or an array of async vaalidators) is the third as argument in the formControl
+
+        // when using async validator, as the control-value changes, 'ng-pending' gets attached as dynamic class replacing ng-invalid/ng-valid and later when the async function is resolved, it is replaced by ng-valid/ng-invalid
+
+        email: new FormControl(
+          null,
+          [Validators.required, Validators.email],
+          this.forbiddenEmails
+        ),
       }),
       gender: new FormControl('male'),
       // FormArray to be used if you want to hold array of controls, to initialize pass an array, you could already initialize some form-controls or keep the array empty.
@@ -95,5 +105,20 @@ export class AppComponent implements OnInit {
     }
     // IMP: return null if validation is successful or omit the return statement.
     return null;
+  }
+
+  // Creating an async validator
+  // the return type is a promise or observable, the constructs which handle asynchronous data
+  forbiddenEmails(control: FormControl): Promise<any> | Observable<any> {
+    const promise = new Promise<any>((resolve, reject) => {
+      setTimeout(() => {
+        if (control.value === 'test@test.com') {
+          resolve({ emailIsForbidden: true });
+        } else {
+          resolve(null);
+        }
+      }, 1500);
+    });
+    return promise;
   }
 }
